@@ -26,7 +26,7 @@ var phantomStream = require('phantom-event-stream');
 
 phantomStream(opts.url, opts.size, opts)
 
-  .on('savethis', function (b){ // this is an event sent from page context
+  .on('savethis', function (b){ // this is an event sent from phantom context
     b = JSON.parse(b)
     debug('got '+b.file+' picture length (b64) '+ b.img.length)
     var file = path.join(opts.output, b.file);
