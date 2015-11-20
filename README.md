@@ -14,7 +14,10 @@ This helper will take care of many thing for you in order to get it right asap a
 
 ## Usage
 
-You ll get to declare a file for node, to consume the stream, and a file for the browser to emit events, and probably a file in the view to send some events.
+You ll get to declare
+- a file for node, to consume the stream,
+- a file for the browser to emit events,
+- and probably a phantomjs file to control in between node and browser
 
 __node stream__ Should look likes this, more or less.
 
@@ -55,6 +58,18 @@ phantomStream(opts.url, opts.size, opts)
   })
 ```
 
+__browser interface__
+```js
+var myStuff = {
+  doSomeStuff: function () {
+    window.phantomSpeaker // this is a global object injected by phantom-stream-events to speak to node/phantom processes
+        .emit('EVENT', {data:to, share:with_node});
+  }
+};
+
+myStuff.doSomeStuff();
+```
+
 __phantom interface__ Should look likes this, more or less.
 
 ```js
@@ -82,17 +97,13 @@ pageHelper.open(opts.url, function () {
 });
 ```
 
-__browser interface__
-```js
-var myStuff = {
-  doSomeStuff: function () {
-    window.phantomSpeaker // this is a global object injected by phantom-stream-events to speak to node/phantom processes
-        .emit('EVENT', {data:to, share:with_node});
-  }
-};
+## Options
 
-myStuff.doSomeStuff();
-```
+Please see documentation at
+
+https://github.com/maboiteaspam/screenshot-stream-selected
+
+
 
 ## Examples
 
