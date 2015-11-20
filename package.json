@@ -1,0 +1,12 @@
+{
+  "name": "phantom-event-stream",
+  "version": "1.0.0",
+  "description": "Phantomjs event stream interface to listen to webpage speaking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "WTF"
+}
