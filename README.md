@@ -63,7 +63,9 @@ __browser interface__
 var myStuff = {
   doSomeStuff: function () {
     window.phantomSpeaker // this is a global object injected by phantom-stream-events to speak to node/phantom processes
-        .emit('EVENT', {data:to, share:with_node});
+        .emit('screenthis', {data:to, share:with_node});
+    window.phantomSpeaker.emit('savethis', {data:to, share:with_node});
+    window.phantomSpeaker.emit('token', {data:to, share:with_node});
   }
 };
 
