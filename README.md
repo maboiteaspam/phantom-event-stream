@@ -1,6 +1,6 @@
 # phantom-event-stream
 
-A phantomjs wrapper to interface with it as an event stream.
+A wrapper to interface with phantomjs as a node event stream.
 
 Event are emitted from the browser context and forwarded to the node interface.
 
@@ -94,6 +94,8 @@ var myStuff = {
 myStuff.doSomeStuff();
 ```
 
+## Examples
 
+See https://github.com/maboiteaspam/screenshot-stream-selected for an example.
 
-
+This work was heavily inspired by https://github.com/kevva/screenshot-stream
