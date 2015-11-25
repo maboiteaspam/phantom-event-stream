@@ -1,5 +1,5 @@
 'use strict';
-var debug = require('debug')('screenshot-stream');
+var debug = require('debug')('phantom-event-stream');
 var path = require('path');
 var urlMod = require('url');
 var parseCookiePhantomjs = require('parse-cookie-phantomjs');
@@ -36,9 +36,9 @@ module.exports = function (url, size, opts) {
   opts.height   = size.split(/x/i)[1] * opts.scale;
   opts.cookies  = handleCookies(opts.cookies, opts.url);
   opts.token    = 'speaker-token-' + (new Date().getTime());
-  opts.main     = path.join(__dirname, 'phantom-main.js');
-
-  debug(opts)
+  opts.main     = opts.main || path.join(__dirname, 'phantom-main.js');
+  opts.scripts  = opts.scripts || [];
+  opts.scripts.unshift(__dirname+'/public/phantom-speaker.js');
 
   var cp = phantomBridge(opts.main, [
     '--ignore-ssl-errors=true',
@@ -65,8 +65,6 @@ module.exports = function (url, size, opts) {
       stream.emit(msg.shift().toLowerCase(), msg.join(':'));
     }
 
-  }).on('end', function () {
-    debug(opts)
   });
 
   byline(cp.stderr).on('data', function (data) {

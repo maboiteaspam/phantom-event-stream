@@ -2,11 +2,18 @@
   "name": "phantom-event-stream",
   "version": "1.0.0",
   "description": "Phantomjs event stream interface to listen to webpage speaking",
-  "main": "index.js",
+  "main": "phantom-stream.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
-  "license": "WTF"
+  "license": "WTF",
+  "dependencies": {
+    "byline": "^4.2.1",
+    "debug": "^2.2.0",
+    "object-assign": "^4.0.1",
+    "parse-cookie-phantomjs": "^1.2.0",
+    "phantom-bridge": "^1.0.0"
+  }
 }

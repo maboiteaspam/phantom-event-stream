@@ -90,8 +90,13 @@ var Page = function (phantom, opts) {
         return;
       }
       page.evaluateJavaScript("function(){window.phantomSpeakerToken = '" + opts.token + "';}");
-      page.injectJs('public/phantom-speaker.js');
+
       cb(status)
+
+      // Update page render with help of the user scripts.
+      opts.scripts.forEach(function(s){
+        page.injectJs(s);
+      })
     });
   };
 
