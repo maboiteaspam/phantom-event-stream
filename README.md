@@ -19,32 +19,35 @@ You ll get to declare
 - a file for the browser to emit events,
 - and probably a phantomjs file to control in between node and browser
 
-__node stream__ Should look likes this, more or less.
+__node stream__
+
+Should look likes this, more or less.
 
 ```js
-var phantomStream = require('phantom-event-stream');
 
+var phantomStream = require('phantom-event-stream');
+                                                        // its your duty to create a webserver.
 phantomStream(opts.url, opts.size, opts)
 
-  .on('savethis', function (b){ // this is an event sent from phantom context
+  .on('savethis', function (b){                         // this is an event sent from phantom context
     b = JSON.parse(b)
-    debug('got '+b.file+' picture length (b64) '+ b.img.length)
-    var file = path.join(opts.output, b.file);
-    var d = path.dirname(file);
-    if (fs.existsSync(d)===false) fs.mkdirSync(d)
+    console.log(b);
 
     fs.writeFileSync(file, new Buffer(b.img, 'base64'))
-  }).on('screenthis', function (d){ // this is an event sent from page context
+  }).on('screenthis', function (d){                     // this is an event sent from page context
     debug('screenthis : '+d)
 
-  }).on('token', function (d){ // this is an event sent from page context
+  }).on('token', function (d){                          // this is an event sent from page context
     debug('token : '+d)
 
-  }).on('data', function (d){ // this is regualr data / error / end event
-    /* !!! for some reasons, it is required to bind data to receive end event */
+  }).on('data', function (d){                           // this is regualr data / error / end event
+    /* !!! for some reasons,
+     it is required to bind data
+      to receive end event */
     console.log('PAGE IS TALKING : '+d)
 
-  }).on('warn', function (d){ // specific to this implementation to separate page errors from node errors
+  }).on('warn', function (d){                           // specific to phantom-event-stream
+                                                        // to separate page errors from node errors
     console.error('Got warning !!')
     console.error(d)
 
@@ -60,10 +63,13 @@ phantomStream(opts.url, opts.size, opts)
 
 __browser interface__
 ```js
-var myStuff = {
+var myStuff = {                                                         // some class of yours.
   doSomeStuff: function () {
-    window.phantomSpeaker // this is a global object injected by phantom-stream-events to speak to node/phantom processes
+    window.phantomSpeaker                                               // this is a global object injected by
+                                                                        // phantom-stream-events.
+                                                                        // Use it to speak to node/phantom processes.
         .emit('screenthis', {data:to, share:with_node});
+
     window.phantomSpeaker.emit('savethis', {data:to, share:with_node});
     window.phantomSpeaker.emit('token', {data:to, share:with_node});
   }
@@ -72,28 +78,34 @@ var myStuff = {
 myStuff.doSomeStuff();
 ```
 
-__phantom interface__ Should look likes this, more or less.
+__phantom interface__
+
+Should look likes this, more or less.
 
 ```js
+
 /* global phantom,document,window,btoa */
 'use strict';
 var system = require('system');
-var Page = require('phantom-helper/phantom-main').Page; // this path needs to be checked
 var opts = JSON.parse(system.args[1]);
+var Page = require('phantom-helper/phantom-main').Page; // The helper to event from the browser to node,
+                                                        // with phantom in between.
 
-var pageHelper = new Page(phantom, opts)
-var page = pageHelper.page;
+var pageHelper = new Page(phantom, opts);               // make a new helper instance
+var page = pageHelper.page;                             // get the regular phantomJS page object.
 
 pageHelper.onMessage = function (event, msg) {
-  if(event==='message sent from the browser') { // regarding previous example this should be screenthis, savethis, token
-    // do some stuff
+  if(event==='eventID') {                               // those are events sent from the browser.
+    console.log(msg)                                    // do some stuff
+                                                        // you can't cancel event, but you can transform,
+                                                        // then emit a new event.
   }
 };
 
-pageHelper.open(opts.url, function () {
+pageHelper.open(opts.url, function () {         // open the page, regular phantomjs practice
 
   setInterval(function () {
-    phantom.exit(); // up to you.
+    phantom.exit();                             // up to you.
   }, 2 * 1000);
 
 });
@@ -101,9 +113,33 @@ pageHelper.open(opts.url, function () {
 
 ## Options
 
-Please see documentation at
+__url__
 
-https://github.com/maboiteaspam/screenshot-stream-selected
+    Url to call in phantomjs
+
+__size__
+
+    Size of the screen before any processing
+
+__cookies__
+
+    JSON object of cookies.
+
+__delay__
+
+    Delay in seconds before processing starts.
+
+__scale__
+
+    Scaling of the page between 0->1.
+
+__main__
+
+    The path to the main script to run with phantomjs.
+
+__scripts__
+
+    An array of JS files to inject into the browser context.
 
 
 
