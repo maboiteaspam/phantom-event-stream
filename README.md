@@ -98,7 +98,7 @@ Should look likes this, more or less.
 'use strict';
 var system = require('system');
 var opts = JSON.parse(system.args[1]);
-var Page = require('phantom-helper/phantom-main').Page; // The helper to event from the browser to node,
+var Page = require('phantom-event-stream/phantom-helper').Page; // The helper to event from the browser to node,
                                                         // with phantom in between.
 
 var pageHelper = new Page(phantom, opts);               // make a new helper instance
