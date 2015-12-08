@@ -26,6 +26,16 @@ Should look likes this, more or less.
 ```js
 
 var phantomStream = require('phantom-event-stream');
+
+var opts = {
+  main: __dirname + '/phantom-main.js',
+  url: 'https://www.some.com/',
+  size: '800x600',
+  scripts: [ // to inject in brower context
+    __dirname + '/browser.js'
+  ]
+};
+
                                                         // its your duty to create a webserver.
 phantomStream(opts.url, opts.size, opts)
 
