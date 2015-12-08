@@ -23,6 +23,7 @@ __node stream__
 
 Should look likes this, more or less.
 
+__index.js__
 ```js
 
 var phantomStream = require('phantom-event-stream');
@@ -72,6 +73,8 @@ phantomStream(opts.url, opts.size, opts)
 ```
 
 __browser interface__
+
+__browser.js__
 ```js
 var myStuff = {                                                         // some class of yours.
   doSomeStuff: function () {
@@ -92,6 +95,7 @@ __phantom interface__
 
 Should look likes this, more or less.
 
+__phantom-main.js__
 ```js
 
 /* global phantom,document,window,btoa */
